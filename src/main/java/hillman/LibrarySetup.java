@@ -38,13 +38,13 @@ public class LibrarySetup {
         boolean sixtyFourBitJVM = false;
         
         sixtyFourBitJVM = System.getProperty("os.arch").contains("64");
-        String path = new File("").getAbsolutePath() + "\\lib\\";
+        String path = new File("").getAbsolutePath() + "/lib/";
         
         if(System.getProperty("os.name").toLowerCase().contains("window")) {
-            path += "windows\\";
+            path += "windows/";
             sixtyFourBitOS = (System.getenv("ProgramFiles(x86)") != null);
         } else {
-            path += "linux\\";
+            path += "linux/";
             try {
                 Process proc = Runtime.getRuntime().exec("uname -a");
                 BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
@@ -65,11 +65,11 @@ public class LibrarySetup {
             final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
 
             if(sixtyFourBitOS && sixtyFourBitJVM) {
-                path += "64";
+                path += "64/";
                 newPaths[newPaths.length - 1] = path;
                 usrPathsField.set(null, newPaths);
             } else if(!sixtyFourBitOS && !sixtyFourBitJVM) {
-                path += "32";
+                path += "32/";
                 newPaths[newPaths.length - 1] = path;
                 usrPathsField.set(null, newPaths);
             } else {
