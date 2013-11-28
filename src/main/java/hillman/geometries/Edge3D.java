@@ -13,7 +13,7 @@
  */
 package hillman.geometries;
 
-import hillman.algorithms.catmull_clark.CatmullClarkUtils;
+import hillman.algorithms.subdivision.catmull_clark.CatmullClarkUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;

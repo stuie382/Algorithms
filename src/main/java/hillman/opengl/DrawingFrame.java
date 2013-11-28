@@ -13,6 +13,7 @@
 */
 package hillman.opengl;
 
+import hillman.algorithms.subdivision.SubdivisionKeyListener;
 import com.jogamp.opengl.util.FPSAnimator;
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;
@@ -67,8 +68,8 @@ public class DrawingFrame extends JFrame implements GLEventListener {
         
         messageLabel = new JLabel();
         messageLabel.setOpaque(true);
-        messageLabel.setBackground(Color.BLACK);
-        messageLabel.setForeground(Color.YELLOW);
+        messageLabel.setBackground(Color.WHITE);
+        messageLabel.setForeground(Color.BLACK);
         messageLabel.setMinimumSize(new Dimension(100, 35));
         messageLabel.setMaximumSize(new Dimension(100, 35));
         messageLabel.setPreferredSize(new Dimension(100, 35));
@@ -79,7 +80,6 @@ public class DrawingFrame extends JFrame implements GLEventListener {
         addWindowListener(new ExitOnCloseAdaptor());
         
         glu = new GLU();
-        addKeyListener(new SubdivisionKeyListener(this));
     }
     
     /** Sets frame size, location & displays on screen. */
@@ -157,13 +157,14 @@ public class DrawingFrame extends JFrame implements GLEventListener {
     @Override
     public void init(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         GL2 gl2 = gl.getGL2();
         gl2.glMatrixMode(GL2.GL_PROJECTION);
         gl2.glLoadIdentity();
         glu.gluPerspective(60, 1.0, 0.0, 100.0);
         glu.gluLookAt(0.0, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
         
-        FPSAnimator animator = new FPSAnimator(drawable, 15, true);
+        FPSAnimator animator = new FPSAnimator(drawable, 25, true);
         animator.start();
     }
 
@@ -179,9 +180,9 @@ public class DrawingFrame extends JFrame implements GLEventListener {
         GL2 gl2 = gl.getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         
-        gl2.glRotatef(2.0f, 0.0f, 1.0f, 0.0f); 
+        gl2.glRotatef(1.0f, 0.0f, 1.0f, 0.0f); 
         gl.glLineWidth(1.0f);
-        gl2.glColor3f(1.0f, 1.0f, 0.0f);
+        gl2.glColor3f(0.0f, 0.0f, 0.0f);
         
         for(Polyhedron poly : polyhedrons) {
             

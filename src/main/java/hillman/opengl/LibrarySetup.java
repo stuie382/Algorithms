@@ -12,7 +12,7 @@
  * For more information please contact support@cmclinnovations.com
  */
 
-package hillman;
+package hillman.opengl;
 
 import java.io.BufferedReader;
 import java.io.File;

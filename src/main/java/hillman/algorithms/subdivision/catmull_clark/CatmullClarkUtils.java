@@ -11,7 +11,7 @@
 * You should have received a copy of the GNU General Public License along with the Subdivision project. 
 * If not, see the gnu website.
 */
-package hillman.algorithms.catmull_clark;
+package hillman.algorithms.subdivision.catmull_clark;
 
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;

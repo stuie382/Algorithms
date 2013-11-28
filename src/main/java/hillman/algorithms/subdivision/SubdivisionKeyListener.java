@@ -11,10 +11,12 @@
 * You should have received a copy of the GNU General Public License along with the Subdivision project. 
 * If not, see the gnu website.
 */
-package hillman.opengl;
+package hillman.algorithms.subdivision;
 
-import hillman.algorithms.catmull_clark.CatmullClark;
+import hillman.algorithms.subdivision.catmull_clark.CatmullClark;
+import hillman.algorithms.subdivision.root_three.RootThree;
 import hillman.geometries.PolyhedronFactory;
+import hillman.opengl.DrawingFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -29,12 +31,16 @@ public class SubdivisionKeyListener implements KeyListener {
     /** DrawingFrame used to draw OpenGL objects. */
     private DrawingFrame frame;
     
+    /** String used to store which type of subdivision is currently being used. */
+    private String subdivisionType;
+    
     /** Initialises & stores a class variable containing the DrawingFrame.
      * 
      * @param frame DrawingFrame used to show OpenGl Objects.
      */
-    public SubdivisionKeyListener(DrawingFrame frame) {
+    public SubdivisionKeyListener(DrawingFrame frame, String subdivisionType) {
         this.frame = frame;
+        this.subdivisionType = subdivisionType;
     }
     
     /** Detects key presses & runs the relevant subdivision algorithm, passing the resulting Polyhedron back
@@ -42,7 +48,7 @@ public class SubdivisionKeyListener implements KeyListener {
      * 
      * 1: Reset to Triangular-faced Unit Cube.
      * 2: Reset to Square-faced Unit Cube.
-     * C: Catmull Clark Subdivision.
+     * C: Subdivide.
      * D: Toggle on-screen debug message.
      * 
      * @param e KeyEvent fired when user presses key. 
@@ -66,11 +72,22 @@ public class SubdivisionKeyListener implements KeyListener {
                 frame.toggleDebug();
             break;
                 
-            case KeyEvent.VK_C :
-                CatmullClark cc = new CatmullClark(frame.getLastPolyhedron(), frame);
-                Thread catmullClarkThread = new Thread(cc);
-                catmullClarkThread.setName("Catmull-Clark Subdivision");
-                catmullClarkThread.start();
+            case KeyEvent.VK_ENTER :
+                switch(subdivisionType) {
+                    case "catmull" :
+                        CatmullClark cc = new CatmullClark(frame.getLastPolyhedron(), frame);
+                        Thread catmullClarkThread = new Thread(cc);
+                        catmullClarkThread.setName("Catmull-Clark Subdivision");
+                        catmullClarkThread.start();
+                    break;
+                        
+                    case "root3" :
+                        RootThree rt3 = new RootThree(frame.getLastPolyhedron(), frame);
+                        Thread rootThreeThread = new Thread(rt3);
+                        rootThreeThread.setName("Root-Three Subdivision");
+                        rootThreeThread.start();
+                    break;
+                }
             break;
                 
             default :

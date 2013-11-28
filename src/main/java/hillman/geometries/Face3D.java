@@ -13,7 +13,7 @@
  */
 package hillman.geometries;
 
-import hillman.algorithms.catmull_clark.CatmullClarkUtils;
+import hillman.algorithms.subdivision.catmull_clark.CatmullClarkUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -59,6 +59,9 @@ public class Face3D {
             if(!vertices.contains(edge.getEnd())) {
                 vertices.add(edge.getEnd());
             }
+        }
+        if(vertices.size() != 3) {
+            System.out.println("NON-TRIANGLE!");
         }
         return vertices;
     }

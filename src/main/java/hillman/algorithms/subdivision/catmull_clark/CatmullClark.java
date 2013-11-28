@@ -12,13 +12,16 @@
 * If not, see the gnu website.
 */
 
-package hillman.algorithms.catmull_clark;
+package hillman.algorithms.subdivision.catmull_clark;
 
+import hillman.algorithms.subdivision.SubdivisionKeyListener;
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;
 import hillman.geometries.Polyhedron;
+import hillman.geometries.PolyhedronFactory;
 import hillman.geometries.Vertex3D;
 import hillman.opengl.DrawingFrame;
+import hillman.opengl.LibrarySetup;
 import java.util.ArrayList;
 
 /** This class holds the core logic & iteration loops for the Catmull-Clark subdivision algorithm.
@@ -133,6 +136,18 @@ public class CatmullClark implements Runnable {
             edgeMids.add(edge.getMidpoint());
         }
         return utils.getAverage(edgeMids);
+    }
+    
+    /** Initialises a <code>DrawingFrame</code> with a unit cube & displays on screen, ready for Catmull-Clark subdivision.
+     * 
+     * @param args Command line arguments. 
+     */
+    public static void main(String[] args) {
+        LibrarySetup.setPath();
+        DrawingFrame frame = new DrawingFrame("Sudivision Example");
+        frame.addKeyListener(new SubdivisionKeyListener(frame, "catmull"));
+        frame.addPolyhedron(PolyhedronFactory.getSquareUnitCube());
+        frame.showFrame();
     }
     
 }
