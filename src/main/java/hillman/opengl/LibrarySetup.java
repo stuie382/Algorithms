@@ -1,38 +1,37 @@
-/*
- * Copyright (c) 2012-2013 CMCL Innovations - All Rights Reserved
- * 
- * This application and all inherent data, source files, information and graphics are 
- * the copyright and sole property of Computational Modelling Cambridge Ltd (CMCL Innovations). 
- * 
- * Any unauthorised redistribution or reproduction of part, or all, of the contents of this 
- * application in any form is prohibited under UK Copyright Law. You may not, except with the 
- * express written permission of CMCL Innovations, distribute or commercially exploit this
- * application or it's content. All other rights reserved.
- * 
- * For more information please contact support@cmclinnovations.com
- */
-
+/**
+* Algorithms Project - Maven based Java project used to showcase various common algorithm implementations.
+* Copyright 2013 - 2014 (c) Michael Hillman (thisishillman.co.uk)
+* 
+* This file is part of the larger, Algorithms project. The Algorithms project is 
+* free software: you can redistribute it and/or modify it under the terms of the GNU General 
+* Public License as published by the Free Software Foundation, either version 3 of the License, 
+* or (at your option) any later version. This project is distributed in the hope that 
+* it will be useful for educational purposes, but WITHOUT ANY WARRANTY; without even the implied 
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License along with the Algorithms project. 
+* If not, see the gnu website.
+*/
 package hillman.opengl;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import javax.swing.JOptionPane;
 
 /**
- * LibrarySetup.java
+ * Detects OS manufacturer & arch to set the library path (primarily for JOGL and GlueGen libraries).
  * 
- * @author Michael Hillman - CMCL Innovations
- * @version 1.0 (27-Nov-2013)
- * MavenTest - hillman
+ * @author M Hillman
+ * @version 1.0 (27/11/2013)
  */
 public class LibrarySetup {
 
+    /** Determines Operating System & hardware architecture to set the Java library path to the appropriate folder.
+     * Primarily used to point towards the correct JOGL & GlueGen native libraries. */
     public static void setPath() {
         boolean sixtyFourBitOS = false;
         boolean sixtyFourBitJVM = false;
@@ -73,12 +72,14 @@ public class LibrarySetup {
                 newPaths[newPaths.length - 1] = path;
                 usrPathsField.set(null, newPaths);
             } else {
-                System.out.println("NO 3D SUCKER!");
+                JOptionPane.showMessageDialog(null, "Cannot determine OS/Architecture for native libraries. Please contact M Hillman.");
+                System.exit(0);
             }
-            
-            System.out.println("SET PATH AS: " + path);
         } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-            //Either the libaries cannot be loaded, or their's an Java/OS architecture mismatch.
+            JOptionPane.showMessageDialog(null, "Cannot determine OS/Architecture for native libraries. Please contact M Hillman.");
+            System.exit(0);
         }
     }
+    
 }
+//End of class.

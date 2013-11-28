@@ -1,17 +1,17 @@
-/*
- * Copyright (c) 2012-2013 CMCL Innovations - All Rights Reserved
- * 
- * This application and all inherent data, source files, information and graphics are 
- * the copyright and sole property of Computational Modelling Cambridge Ltd (CMCL Innovations). 
- * 
- * Any unauthorised redistribution or reproduction of part, or all, of the contents of this 
- * application in any form is prohibited under UK Copyright Law. You may not, except with the 
- * express written permission of CMCL Innovations, distribute or commercially exploit this
- * application or it's content. All other rights reserved.
- * 
- * For more information please contact support@cmclinnovations.com
- */
-
+/**
+* Algorithms Project - Maven based Java project used to showcase various common algorithm implementations.
+* Copyright 2013 - 2014 (c) Michael Hillman (thisishillman.co.uk)
+* 
+* This file is part of the larger, Algorithms project. The Algorithms project is 
+* free software: you can redistribute it and/or modify it under the terms of the GNU General 
+* Public License as published by the Free Software Foundation, either version 3 of the License, 
+* or (at your option) any later version. This project is distributed in the hope that 
+* it will be useful for educational purposes, but WITHOUT ANY WARRANTY; without even the implied 
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License along with the Algorithms project. 
+* If not, see the gnu website.
+*/
 package hillman.algorithms.subdivision.root_three;
 
 import hillman.algorithms.subdivision.SubdivisionKeyListener;

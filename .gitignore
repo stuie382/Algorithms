@@ -3,9 +3,11 @@
 #################
 
 target/
+*.jar
 
 #################
 ## NetBeans
 #################
 
 nbactions.xml
+src/test
