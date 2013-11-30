@@ -73,7 +73,7 @@ public class RootThree implements Runnable {
     @Override
     public void run() {
         frame.drawString("Running Root-Three Subdivision...");
-        ArrayList<Face3D> newFaces = new ArrayList<>();
+        List<Face3D> newFaces = new ArrayList<>();
         
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.getNumberOfEdges() != 3) {
@@ -135,7 +135,7 @@ public class RootThree implements Runnable {
      */
     private Vertex3D getSumOfNeighbours(Vertex3D originalVertex) {
         float scalar = getB(originalVertex);
-        ArrayList<Vertex3D> vertexMask = utils.getSurroundingVertices(originalVertex);
+        List<Vertex3D> vertexMask = utils.getSurroundingVertices(originalVertex);
         for(int i = 0; i < vertexMask.size(); i++) {
             vertexMask.set(i, utils.getVertexMultipliedByScalar(vertexMask.get(i), scalar));
         }

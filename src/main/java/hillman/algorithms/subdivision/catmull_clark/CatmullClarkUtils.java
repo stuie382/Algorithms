@@ -45,8 +45,8 @@ public class CatmullClarkUtils {
      * @param edge input Edge3D to find winging faces for.
      * @return ArrayList<Face3D> list of winging faces (size should always be 2).
      */
-    public ArrayList<Face3D> getWingingFaces(Edge3D edge) {
-        ArrayList<Face3D> faces = new ArrayList<>();
+    public List<Face3D> getWingingFaces(Edge3D edge) {
+        List<Face3D> faces = new ArrayList<>();
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.containsEdge(true, edge) && !faces.contains(face)) {
                 faces.add(face);
@@ -84,8 +84,8 @@ public class CatmullClarkUtils {
      * @param vertex Vertex3D to use for edge search.
      * @return ArrayList<Edge3D> list of edges in the input face that contain the input vertex.
      */
-    public ArrayList<Edge3D> getEdgesContainingVertex(Face3D face, Vertex3D vertex) {
-        ArrayList<Edge3D> edges = new ArrayList<>();
+    public List<Edge3D> getEdgesContainingVertex(Face3D face, Vertex3D vertex) {
+        List<Edge3D> edges = new ArrayList<>();
         for(Edge3D edge : face.getEdgeList()) {
             if(edge.containsVertex(vertex) && !edges.contains(edge)) {
                 edges.add(edge);
@@ -99,8 +99,8 @@ public class CatmullClarkUtils {
      * @param vertex input vertex to find containing faces for.
      * @return ArrayList<Face3D> all faces that contain the input vertex.
      */
-    public ArrayList<Face3D> getSurroundingFaces(Vertex3D vertex) {
-        ArrayList<Face3D> faceList = new ArrayList<>();
+    public List<Face3D> getSurroundingFaces(Vertex3D vertex) {
+        List<Face3D> faceList = new ArrayList<>();
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.containsVertex(vertex) && !faceList.contains(face)) {
                 faceList.add(face);
@@ -114,8 +114,8 @@ public class CatmullClarkUtils {
      * @param vertex input vertex to find containing edge for.
      * @return ArrayList<Edge3D> all edges that contain the input vertex.
      */
-    public ArrayList<Edge3D> getSurroundingEdges(Vertex3D vertex) {
-        ArrayList<Edge3D> edgeList = new ArrayList<>();
+    public List<Edge3D> getSurroundingEdges(Vertex3D vertex) {
+        List<Edge3D> edgeList = new ArrayList<>();
         for(Edge3D edge : polyhedron.getEdgeList()) {
             if(edge.containsVertex(vertex) && !edgeList.contains(edge) && !edgeList.contains(edge.reverse())) {
                 edgeList.add(edge);

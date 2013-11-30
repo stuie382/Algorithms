@@ -69,7 +69,7 @@ public class CatmullClark implements Runnable {
     @Override
     public void run() {
         frame.drawString("Running Catmull-Clark Subdivision...");
-        ArrayList<Face3D> newFaces = new ArrayList<>();
+        List<Face3D> newFaces = new ArrayList<>();
         
         for(Vertex3D vertexS : polyhedron.getVertexList()) {
             
@@ -88,10 +88,10 @@ public class CatmullClark implements Runnable {
         
             for(Face3D face : utils.getSurroundingFaces(vertexS)) {
                 Face3D newFace = new Face3D();
-                ArrayList<Vertex3D> edgePoints = new ArrayList<>();
+                List<Vertex3D> edgePoints = new ArrayList<>();
                 
                 for(Edge3D edge : utils.getEdgesContainingVertex(face, vertexS)) {
-                    ArrayList<Face3D> wings = utils.getWingingFaces(edge); 
+                    List<Face3D> wings = utils.getWingingFaces(edge); 
                     Vertex3D facePoint1 = utils.getFacePoint(wings.get(0));
                     Vertex3D facePoint2 = utils.getFacePoint(wings.get(1));
                     edgePoints.add(utils.getEdgePoint(edge, facePoint1, facePoint2));
@@ -116,7 +116,7 @@ public class CatmullClark implements Runnable {
      * @return Vertex3D, average of surrounding face points.
      */
     public Vertex3D getVertexF(Vertex3D vertexS) {
-        ArrayList<Vertex3D> facePoints = new ArrayList<>();
+        List<Vertex3D> facePoints = new ArrayList<>();
         for(Face3D face : utils.getSurroundingFaces(vertexS)) {
             facePoints.add(utils.getFacePoint(face));
         }
@@ -130,7 +130,7 @@ public class CatmullClark implements Runnable {
      * @return Vertex3D, average of surrounding edge mid-points.
      */
     public Vertex3D getVertexR(Vertex3D vertexS) {
-        ArrayList<Vertex3D> edgeMids = new ArrayList<>();
+        List<Vertex3D> edgeMids = new ArrayList<>();
         
         for(Edge3D edge : utils.getSurroundingEdges(vertexS)) {
             edgeMids.add(edge.getMidpoint());

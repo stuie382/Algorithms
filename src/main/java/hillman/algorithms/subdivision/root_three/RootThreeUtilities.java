@@ -45,7 +45,7 @@ public class RootThreeUtilities {
      * @param vertices list of input vertices.
      * @return resulting average vertex.
      */
-    public Vertex3D getAverage(ArrayList<Vertex3D> vertices) {
+    public Vertex3D getAverage(List<Vertex3D> vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
         for(Vertex3D vertex : vertices) {
             x += vertex.getX();
@@ -61,8 +61,8 @@ public class RootThreeUtilities {
      * @param vertex input vertex to find containing edge for.
      * @return ArrayList<Vertex3D> all neighbouring vertices.
      */
-    public ArrayList<Vertex3D> getSurroundingVertices(Vertex3D vertex) {
-        ArrayList<Vertex3D> vertexList = new ArrayList<>();
+    public List<Vertex3D> getSurroundingVertices(Vertex3D vertex) {
+        List<Vertex3D> vertexList = new ArrayList<>();
         for(Edge3D edge : polyhedron.getEdgeList()) {
             if(edge.getStart().equals(vertex)) {
                 vertexList.add(edge.getEnd());
@@ -107,7 +107,7 @@ public class RootThreeUtilities {
      * @param vertices ArrayList<Vertex3D> to sum.
      * @return vertex representing the sum of input vertices.
      */
-    public Vertex3D getVertexAddition(ArrayList<Vertex3D> vertices) {
+    public Vertex3D getVertexAddition(List<Vertex3D> vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
         for(int i = 0; i < vertices.size(); i++) {
             x += vertices.get(i).getX();
@@ -123,8 +123,8 @@ public class RootThreeUtilities {
      * @param edge input Edge3D to find winging faces for.
      * @return ArrayList<Face3D> list of winging faces (size should always be 2).
      */
-    public ArrayList<Face3D> getWingingFaces(Edge3D edge) {
-        ArrayList<Face3D> faces = new ArrayList<>();
+    public List<Face3D> getWingingFaces(Edge3D edge) {
+        List<Face3D> faces = new ArrayList<>();
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.containsEdge(true, edge) && !faces.contains(face)) {
                 faces.add(face);
