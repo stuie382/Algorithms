@@ -14,9 +14,6 @@
 */
 package hillman.geometries;
 
-import hillman.algorithms.subdivision.catmull_clark.CatmullClarkUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -116,10 +113,7 @@ public class Edge3D {
             return false;
         }
         Edge3D edge = (Edge3D) obj;
-        if(getStart().equals(edge.getStart()) && getEnd().equals(edge.getEnd())) {
-            return true;
-        } 
-        return false;
+        return (getStart().equals(edge.getStart()) && getEnd().equals(edge.getEnd()));
     }
 
     /** Generates hash code based on start & end vertices of this edge.

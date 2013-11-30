@@ -14,7 +14,8 @@
 */
 package hillman.algorithms.subdivision.catmull_clark;
 
-import hillman.algorithms.subdivision.SubdivisionKeyListener;
+import hillman.algorithms.subdivision.SubdivisionAlgorithm;
+import hillman.algorithms.subdivision.SubdivisionHandler;
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;
 import hillman.geometries.Polyhedron;
@@ -23,13 +24,14 @@ import hillman.geometries.Vertex3D;
 import hillman.opengl.DrawingFrame;
 import hillman.opengl.LibrarySetup;
 import java.util.ArrayList;
+import java.util.List;
 
 /** This class holds the core logic & iteration loops for the Catmull-Clark subdivision algorithm.
  * 
  * @author M Hillman
  * @version 1.0 (25/11/2013).
  */
-public class CatmullClark implements Runnable {
+public class CatmullClark implements SubdivisionAlgorithm, Runnable {
     
     /** Polyhedron for subdivision. */
     private Polyhedron polyhedron;
@@ -40,16 +42,22 @@ public class CatmullClark implements Runnable {
     /** DrawingFrame object used as target for resulting polyhedron. */
     private DrawingFrame frame;
     
-    /** Initialises with an input Polyhedron object for subdivision, also creates a CatmullClarkUtilities
-     * object to handle additional mathematical calculations.
+    /** Sets the Polyhedron object for subdivision, creates a CatmullClarkUtilities
+     * object to handle additional mathematical calculation, finally creates a Thread
+     * object and begins subdivision.
      * 
      * @param polyhedron Polyhedron for subdivision.
      * @param frame DrawingFrame to push resulting Polyhedron to.
      */
-    public CatmullClark(Polyhedron polyhedron, DrawingFrame frame) {
+    @Override
+    public void subdivide(Polyhedron polyhedron, DrawingFrame frame) {
         this.polyhedron = polyhedron;
         this.frame = frame;
         this.utils = new CatmullClarkUtils(polyhedron);
+        
+        Thread thread = new Thread(this);
+        thread.setName("Catmull-Clark Subdivision");
+        thread.start();
     }
     
     /** Main logic for the Catmull-Clark algorithm, pushes final polyhedron to the DrawingFrame when done. In essence,
@@ -144,11 +152,10 @@ public class CatmullClark implements Runnable {
      */
     public static void main(String[] args) {
         LibrarySetup.setPath();
-        DrawingFrame frame = new DrawingFrame("Sudivision Example");
-        frame.addKeyListener(new SubdivisionKeyListener(frame, "catmull"));
+        DrawingFrame frame = new DrawingFrame("Catmull-Clark Sudivision");
+        frame.addKeyListener(new SubdivisionHandler(frame, new CatmullClark()));
         frame.addPolyhedron(PolyhedronFactory.getSquareUnitCube());
         frame.showFrame();
     }
-    
 }
 //End of class.

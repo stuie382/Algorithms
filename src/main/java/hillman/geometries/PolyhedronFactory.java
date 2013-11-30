@@ -14,6 +14,9 @@
 */
 package hillman.geometries;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /** This PolyhedronFactory class contains static methods to generate simple Polyhedron objects.
  * 
  * @author M Hillman
@@ -67,7 +70,7 @@ public class PolyhedronFactory {
         Face3D faceK = new Face3D(edgeC.reverse(), edgeG.reverse(), edgeQ.reverse());
         Face3D faceL = new Face3D(edgeH, edgeK, edgeQ);
         
-        Polyhedron cube = new Polyhedron(faceA, faceB, faceC, faceD, faceE, faceF, faceG, faceH, faceI, faceJ, faceK, faceL);
+        Polyhedron cube = new Polyhedron(new ArrayList<>(Arrays.asList(faceA, faceB, faceC, faceD, faceE, faceF, faceG, faceH, faceI, faceJ, faceK, faceL)));
         return cube;
     }
     
@@ -105,7 +108,7 @@ public class PolyhedronFactory {
         Face3D faceE = new Face3D(edgeC.reverse(), edgeG.reverse(), edgeH, edgeK);
         Face3D faceF = new Face3D(edgeA, edgeE, edgeJ.reverse(), edgeL.reverse());
         
-        Polyhedron cube = new Polyhedron(faceA, faceB, faceC, faceD, faceE, faceF);
+        Polyhedron cube = new Polyhedron(new ArrayList<>(Arrays.asList(faceA, faceB, faceC, faceD, faceE, faceF)));
         return cube;
     }
     
