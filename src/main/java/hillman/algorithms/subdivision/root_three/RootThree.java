@@ -14,7 +14,8 @@
 */
 package hillman.algorithms.subdivision.root_three;
 
-import hillman.algorithms.subdivision.SubdivisionKeyListener;
+import hillman.algorithms.subdivision.SubdivisionAlgorithm;
+import hillman.algorithms.subdivision.SubdivisionHandler;
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;
 import hillman.geometries.Polyhedron;
@@ -24,13 +25,14 @@ import hillman.opengl.DrawingFrame;
 import hillman.opengl.LibrarySetup;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 /** This class holds the core logic & iteration loops for the Kobbelt's Root-Three subdivision algorithm.
  * 
  * @author M Hillman
  * @version 1.0 (28/11/2013).
  */
-public class RootThree implements Runnable {
+public class RootThree implements SubdivisionAlgorithm, Runnable {
 
     /** Polyhedron for subdivision. */
     private Polyhedron polyhedron;
@@ -41,16 +43,22 @@ public class RootThree implements Runnable {
     /** DrawingFrame object used as target for resulting polyhedron. */
     private DrawingFrame frame;
     
-    /** Initialises with an input Polyhedron object for subdivision, also creates a RootThreeUtilities
-     * object to handle additional mathematical calculations.
+    /** Sets the Polyhedron object for subdivision, creates a RootThreeUtilities
+     * object to handle additional mathematical calculations, finally creates a Thread
+     * object & starts the subdivision proceedure,
      * 
      * @param polyhedron Polyhedron for subdivision.
      * @param frame DrawingFrame to push resulting Polyhedron to.
      */
-    public RootThree(Polyhedron polyhedron, DrawingFrame frame) {
+    @Override
+    public void subdivide(Polyhedron polyhedron, DrawingFrame frame) {
         this.polyhedron = polyhedron;
         this.frame = frame;
         this.utils = new RootThreeUtilities(polyhedron);
+        
+        Thread thread = new Thread(this);
+        thread.setName("Catmull-Clark Subdivision");
+        thread.start();
     }
     
     /** Main logic for the Kobbelt's Root-Three algorithm, pushes final polyhedron to the DrawingFrame when done. In essence,
@@ -80,8 +88,7 @@ public class RootThree implements Runnable {
                 throw new IllegalArgumentException("Cannot perform Root-Three subdivision on a non-triangluar face!");
             }
             
-            Vertex3D midVertex = utils.getAverage(new ArrayList<>(Arrays.asList(face.getVertexList().get(0), 
-                    face.getVertexList().get(1), face.getVertexList().get(2))));
+            Vertex3D midVertex = utils.getAverage(face.getVertexList());
             
             for(Edge3D originalEdge : face.getEdgeList()) {
                 Vertex3D relaxedStart = relaxVertex(originalEdge.getStart());
@@ -111,7 +118,7 @@ public class RootThree implements Runnable {
         frame.drawString("");
     }
     
-    /** Given an original vertex as input, this methods grabsthe sum of it's
+    /** Given an original vertex as input, this methods grabs the sum of it's
      * neighbouring vertices, applies the B scalar & returns the now relaxed vertex.
      * 
      * @param originalVertex original mesh vertex to relax.
@@ -135,14 +142,11 @@ public class RootThree implements Runnable {
      */
     private Vertex3D getSumOfNeighbours(Vertex3D originalVertex) {
         float scalar = getB(originalVertex);
-        ArrayList<Vertex3D> vertexMask = utils.getSurroundingVertices(originalVertex);
-        for(int i = 0; i < vertexMask.size(); i++) {
-            vertexMask.set(i, utils.getVertexMultipliedByScalar(vertexMask.get(i), scalar));
-        }
-        return utils.getVertexAddition(vertexMask);
+        Set<Vertex3D> vertexMask = utils.getSurroundingVertices(originalVertex);
+        return utils.getVertexMultipliedByScalar(utils.getVertexAddition(vertexMask), scalar);
     }
     
-    /** Calculates Kobbelt's B scalar as a function of a vertice's valence.
+    /** Calculates Kobbelt's B scalar as a function of a vertex's valence.
      * 
      * @param originalVertex vertex to calculate B for.
      * @return float, Kobbelt's B scalar factor.
@@ -160,8 +164,8 @@ public class RootThree implements Runnable {
      */
     public static void main(String[] args) {
         LibrarySetup.setPath();
-        DrawingFrame frame = new DrawingFrame("Sudivision Example");
-        frame.addKeyListener(new SubdivisionKeyListener(frame, "root3"));
+        DrawingFrame frame = new DrawingFrame("Root-Three Subdivision");
+        frame.addKeyListener(new SubdivisionHandler(frame, new RootThree()));
         frame.addPolyhedron(PolyhedronFactory.getTriangleUnitCube());
         frame.showFrame();
     }

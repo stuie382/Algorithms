@@ -14,7 +14,7 @@
 */
 package hillman.opengl;
 
-import hillman.algorithms.subdivision.SubdivisionKeyListener;
+import hillman.algorithms.subdivision.SubdivisionHandler;
 import com.jogamp.opengl.util.FPSAnimator;
 import hillman.geometries.Edge3D;
 import hillman.geometries.Face3D;

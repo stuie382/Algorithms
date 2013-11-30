@@ -20,6 +20,9 @@ import hillman.geometries.Polyhedron;
 import hillman.geometries.Vertex3D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /** This class contains utility methods used in the <code>RootThree</code> subdivision algorithm. Whilst the RootThree
  * class contains the main logic, this class contains geometric traversal, numerical & search functions.
@@ -40,12 +43,12 @@ public class RootThreeUtilities {
         this.polyhedron = polyhedron;
     }
     
-    /** Given a list of vertices, this method calculates the resulting average vertex.
+    /** Given a collection of vertices, this method calculates the resulting average vertex.
      * 
-     * @param vertices list of input vertices.
+     * @param vertices collection of input vertices.
      * @return resulting average vertex.
      */
-    public Vertex3D getAverage(ArrayList<Vertex3D> vertices) {
+    public Vertex3D getAverage(Collection<Vertex3D> vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
         for(Vertex3D vertex : vertices) {
             x += vertex.getX();
@@ -55,14 +58,14 @@ public class RootThreeUtilities {
         return new Vertex3D((x / vertices.size()), (y / vertices.size()), (z / vertices.size()));
     }
     
-    /** Given an input vertex, this method return a list of all the vertices in the polyhedron that ring
+    /** Given an input vertex, this method return a set of all the vertices in the polyhedron that ring
      * the input vertex.
      * 
      * @param vertex input vertex to find containing edge for.
-     * @return ArrayList<Vertex3D> all neighbouring vertices.
+     * @return Set<Vertex3D> all neighbouring vertices.
      */
-    public ArrayList<Vertex3D> getSurroundingVertices(Vertex3D vertex) {
-        ArrayList<Vertex3D> vertexList = new ArrayList<>();
+    public Set<Vertex3D> getSurroundingVertices(Vertex3D vertex) {
+        Set<Vertex3D> vertexList = new HashSet<>();
         for(Edge3D edge : polyhedron.getEdgeList()) {
             if(edge.getStart().equals(vertex)) {
                 vertexList.add(edge.getEnd());
@@ -107,24 +110,24 @@ public class RootThreeUtilities {
      * @param vertices ArrayList<Vertex3D> to sum.
      * @return vertex representing the sum of input vertices.
      */
-    public Vertex3D getVertexAddition(ArrayList<Vertex3D> vertices) {
+    public Vertex3D getVertexAddition(Collection<Vertex3D> vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
-        for(int i = 0; i < vertices.size(); i++) {
-            x += vertices.get(i).getX();
-            y += vertices.get(i).getY();
-            z += vertices.get(i).getZ();
+        for(Vertex3D vertex : vertices) {
+            x += vertex.getX();
+            y += vertex.getY();
+            z += vertex.getZ();
         }
         return new Vertex3D(x, y, z);
     }
     
     
-    /** Given a edge, this method returns all faces that contain this edge.
+    /** Given a edge, this method returns a set of all faces that contain this edge.
      * 
      * @param edge input Edge3D to find winging faces for.
-     * @return ArrayList<Face3D> list of winging faces (size should always be 2).
+     * @return Set<Face3D> set of winging faces (size should always be 2).
      */
-    public ArrayList<Face3D> getWingingFaces(Edge3D edge) {
-        ArrayList<Face3D> faces = new ArrayList<>();
+    public Set<Face3D> getWingingFaces(Edge3D edge) {
+        Set<Face3D> faces = new HashSet<>();
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.containsEdge(true, edge) && !faces.contains(face)) {
                 faces.add(face);
@@ -143,23 +146,21 @@ public class RootThreeUtilities {
     public Vertex3D getMidPointOfWingingFace(Edge3D edge, Face3D face) {
         for(Face3D otherFace : polyhedron.getFaceList()) {
             if(otherFace.containsEdge(true, edge) && !otherFace.equals(face)) {
-                return getAverage(new ArrayList<>(Arrays.asList(otherFace.getVertexList().get(0), 
-                        otherFace.getVertexList().get(1), otherFace.getVertexList().get(2))));
+                return getAverage(otherFace.getVertexList());
             }
         }
         return null;
     }
     
-    /** Returns true if the input list contains the input face, regardless of edge or vertex order.
+    /** Returns true if the input collection contains the input face, regardless of edge or vertex order.
      * 
      * @param faceList input list of Face3D objects for searching.
      * @param face search target.
-     * @return true if face is in list (regardless of direction).
+     * @return true if face is in collection (regardless of direction).
      */
-    public boolean containsFace(ArrayList<Face3D> faceList, Face3D face) {
+    public boolean containsFace(Collection<Face3D> faceList, Face3D face) {
         for(Face3D faceFromList : faceList) {
-            if(faceFromList.containsVertex(face.getVertexList().get(0)) && faceFromList.containsVertex(face.getVertexList().get(1))
-                    && faceFromList.containsVertex(face.getVertexList().get(2))) {
+            if(faceFromList.getVertexList().equals(face.getVertexList())) {
                 return true;
             }
         }

@@ -15,7 +15,9 @@
 package hillman.geometries;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /** Polyhedron
  * 
@@ -26,43 +28,38 @@ import java.util.Arrays;
  */
 public class Polyhedron {
     
-    /** Array list of faces that comprise this polyhedron. */
-    private ArrayList<Face3D> faces;
-    
-    /** Constructor that initialises with an array of Face3D objects.
-     * 
-     * @param faces Face3D[], desired array of face objects.
-     */
-    public Polyhedron(Face3D... faces) {
-        this.faces = new ArrayList<>(Arrays.asList(faces));
-    }
+    /** Set of faces that comprise this polyhedron. */
+    private Set<Face3D> faces;
     
     /** Constructor that initialises with an array list of Face3D objects.
      * 
-     * @param faces ArrayList<Face3D>, desired array list of face objects.
+     * @param faces Collection<Face3D>, desired array list of face objects.
      */
-    public Polyhedron(ArrayList<Face3D> faces) {
-        this.faces = faces;
+    public Polyhedron(Collection<Face3D> faces) {
+        this.faces = new HashSet<>();
+        for(Face3D face : faces) {
+            this.faces.add(face);
+        }
     }
     
-    /** Returns the Face3D array list that comprises this polyhedron.
+    /** Returns the Face3D set that comprises this polyhedron.
      * 
-     * @return ArrayList<Face3D>, face array list.
+     * @return Set<Face3D>, face set.
      */
-    public ArrayList<Face3D> getFaceList() {
+    public Set<Face3D> getFaceList() {
         return faces;
     }
     
-    /** Returns an array list of all Edge3D objects that comprise this polyhedron. 
+    /** Returns an hash set of all Edge3D objects that comprise this polyhedron. 
      * Note: these are return in order of edge construction, without any duplicates.
      * 
-     * @return ArrayList<Edge3D>, unique array list of Edge3D objects.
+     * @return Set<Edge3D>, unique array list of Edge3D objects.
      */
-    public ArrayList<Edge3D> getEdgeList() {
-        ArrayList<Edge3D> edgeList = new ArrayList<>();
+    public Set<Edge3D> getEdgeList() {
+        Set<Edge3D> edgeList = new HashSet<>();
         for(Face3D face : getFaceList()) {
             for(Edge3D e : face.getEdgeList()) {
-                if(!edgeList.contains(e) && !edgeList.contains(e.reverse())) {
+                if(!edgeList.contains(e.reverse())) {
                     edgeList.add(e);
                 }
             }
@@ -70,21 +67,17 @@ public class Polyhedron {
         return edgeList;
     }
     
-    /** Returns an array list of all Vertex3D objects that comprise this polyhedron.
+    /** Returns an set of all Vertex3D objects that comprise this polyhedron.
      * Note: these are return in order of edge construction, without any duplicates.
      * 
-     * @return ArrayList<Verte3D>, unique array list of Vertex3D objects.
+     * @return Set<Verte3D>, unique array list of Vertex3D objects.
      */
-    public ArrayList<Vertex3D> getVertexList() {
-        ArrayList<Vertex3D> vertList = new ArrayList<>();
+    public Set<Vertex3D> getVertexList() {
+        Set<Vertex3D> vertList = new HashSet<>();
         for(Face3D f : getFaceList()) {
             for(Edge3D e : f.getEdgeList()) {
-                if(!vertList.contains(e.getStart())) {
-                    vertList.add(e.getStart());
-                }
-                if(!vertList.contains(e.getEnd())) {
-                    vertList.add(e.getEnd());
-                }
+                vertList.add(e.getStart());
+                vertList.add(e.getEnd());
             }
         }
         return vertList;

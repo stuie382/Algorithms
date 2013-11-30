@@ -14,10 +14,11 @@
 */
 package hillman.geometries;
 
-import hillman.algorithms.subdivision.catmull_clark.CatmullClarkUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class represents a three dimensional geometric face (comprised of N Edge3D objects) in Euclidean space.
@@ -27,42 +28,36 @@ import java.util.Objects;
  */
 public class Face3D {
 
-    /** ArrayList of Edge3D objects comprising this face. */
-    private ArrayList<Edge3D> edges;
+    /** Set of Edge3D objects comprising this face. */
+    private Set<Edge3D> edges;
     
     /** Constructor that initialises a Face3D object with the input array of Edge3D objects.
      * 
      * @param edges Edge3D[], desired edge array.
      */
     public Face3D(Edge3D... edges) {
-       this.edges = new ArrayList<>(Arrays.asList(edges));
+       this.edges = new HashSet<>();
+       this.edges.addAll(Arrays.asList(edges));
     }
     
-    /** Returns the Edge3D array list comprising this Face3D instance. 
+    /** Returns the Edge3D set comprising this Face3D instance. 
      * 
-     * @return ArrayList<Edge3D>, edge array underlying this face.
+     * @return Set<Edge3D>, edge array underlying this face.
      */
-    public ArrayList<Edge3D> getEdgeList() {
+    public Set<Edge3D> getEdgeList() {
         return edges;
     }
 
-    /** Returns an array list of all Vertex3D objects that comprise this face. Note: these 
+    /** Returns a set of all Vertex3D objects that comprise this face. Note: these 
      * are return in order of edge construction, without any duplicates.
      * 
-     * @return ArrayList<Vertex3D>, unique array of Vertex3D objects.
+     * @return Set<Vertex3D>, unique array of Vertex3D objects.
      */
-    public ArrayList<Vertex3D> getVertexList() {
-        ArrayList<Vertex3D> vertices = new ArrayList<>();
+    public Set<Vertex3D> getVertexList() {
+        Set<Vertex3D> vertices = new HashSet<>();
         for(Edge3D edge : getEdgeList()) {
-            if(!vertices.contains(edge.getStart())) {
-                vertices.add(edge.getStart());
-            }
-            if(!vertices.contains(edge.getEnd())) {
-                vertices.add(edge.getEnd());
-            }
-        }
-        if(vertices.size() != 3) {
-            System.out.println("NON-TRIANGLE!");
+            vertices.add(edge.getStart());
+            vertices.add(edge.getEnd());
         }
         return vertices;
     }
@@ -123,12 +118,7 @@ public class Face3D {
         if(getNumberOfEdges() != face.getNumberOfEdges()) {
             return false;
         }
-        for(int i = 0; i < getEdgeList().size(); i++) {
-            if(!getEdgeList().get(i).equals(face.getEdgeList().get(i))) {
-                return false;
-            }
-        }
-        return true;
+        return face.getEdgeList().equals(getEdgeList());
     }
 
     /** Generates hash code based on edge list.

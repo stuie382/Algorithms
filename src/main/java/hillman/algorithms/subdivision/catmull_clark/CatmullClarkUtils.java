@@ -20,6 +20,10 @@ import hillman.geometries.Polyhedron;
 import hillman.geometries.Vertex3D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /** This class contains utility methods used in the <code>CatmullClark</code> subdivision algorithm. Whilst the CatmullClark
  * class contains the main logic, this class contains geometric traversal, numerical & search functions.
@@ -43,10 +47,10 @@ public class CatmullClarkUtils {
     /** Given a edge, this method returns all faces that contain this edge.
      * 
      * @param edge input Edge3D to find winging faces for.
-     * @return ArrayList<Face3D> list of winging faces (size should always be 2).
+     * @return List<Face3D> list of winging faces (size should always be 2).
      */
-    public ArrayList<Face3D> getWingingFaces(Edge3D edge) {
-        ArrayList<Face3D> faces = new ArrayList<>();
+    public List<Face3D> getWingingFaces(Edge3D edge) {
+        List<Face3D> faces = new ArrayList<>();
         for(Face3D face : polyhedron.getFaceList()) {
             if(face.containsEdge(true, edge) && !faces.contains(face)) {
                 faces.add(face);
@@ -78,58 +82,58 @@ public class CatmullClarkUtils {
         return getAverage(new ArrayList<>(Arrays.asList(edge.getMidpoint(), fp1, fp2)));
     }
     
-    /** Given a vertex, this method returns a list of all edges in a particular face that contain this vertex.
+    /** Given a vertex, this method returns a set of all edges in a particular face that contain this vertex.
      * 
      * @param face Face3D face to search within.
      * @param vertex Vertex3D to use for edge search.
-     * @return ArrayList<Edge3D> list of edges in the input face that contain the input vertex.
+     * @return Set<Edge3D> list of edges in the input face that contain the input vertex.
      */
-    public ArrayList<Edge3D> getEdgesContainingVertex(Face3D face, Vertex3D vertex) {
-        ArrayList<Edge3D> edges = new ArrayList<>();
+    public Set<Edge3D> getEdgesContainingVertex(Face3D face, Vertex3D vertex) {
+        Set<Edge3D> edges = new HashSet<>();
         for(Edge3D edge : face.getEdgeList()) {
-            if(edge.containsVertex(vertex) && !edges.contains(edge)) {
+            if(edge.containsVertex(vertex)) {
                 edges.add(edge);
             }
         }
         return edges;
     }
     
-    /** Given an input vertex, this method return a list of all faces in the polyhedron that contains the vertex.
+    /** Given an input vertex, this method return a set of all faces in the polyhedron that contains the vertex.
      * 
      * @param vertex input vertex to find containing faces for.
-     * @return ArrayList<Face3D> all faces that contain the input vertex.
+     * @return Set<Face3D> all faces that contain the input vertex.
      */
-    public ArrayList<Face3D> getSurroundingFaces(Vertex3D vertex) {
-        ArrayList<Face3D> faceList = new ArrayList<>();
+    public Set<Face3D> getSurroundingFaces(Vertex3D vertex) {
+        Set<Face3D> faceList = new HashSet<>();
         for(Face3D face : polyhedron.getFaceList()) {
-            if(face.containsVertex(vertex) && !faceList.contains(face)) {
+            if(face.containsVertex(vertex)) {
                 faceList.add(face);
             }
         }
         return faceList;
     }
     
-    /** Given an input vertex, this method return a list of all edges in the polyhedron that contains the vertex.
+    /** Given an input vertex, this method return a set of all edges in the polyhedron that contains the vertex.
      * 
      * @param vertex input vertex to find containing edge for.
-     * @return ArrayList<Edge3D> all edges that contain the input vertex.
+     * @return Set<Edge3D> all edges that contain the input vertex.
      */
-    public ArrayList<Edge3D> getSurroundingEdges(Vertex3D vertex) {
-        ArrayList<Edge3D> edgeList = new ArrayList<>();
+    public Set<Edge3D> getSurroundingEdges(Vertex3D vertex) {
+        Set<Edge3D> edgeList = new HashSet<>();
         for(Edge3D edge : polyhedron.getEdgeList()) {
-            if(edge.containsVertex(vertex) && !edgeList.contains(edge) && !edgeList.contains(edge.reverse())) {
+            if(edge.containsVertex(vertex) && !edgeList.contains(edge.reverse())) {
                 edgeList.add(edge);
             }
         }
         return edgeList;
     }
     
-    /** Given a list of vertices, this method calculates the resulting average vertex.
+    /** Given a collection of vertices, this method calculates the resulting average vertex.
      * 
-     * @param vertices list of input vertices.
+     * @param vertices collection of input vertices.
      * @return resulting average vertex.
      */
-    public Vertex3D getAverage(ArrayList<Vertex3D> vertices) {
+    public Vertex3D getAverage(Collection<Vertex3D> vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
         for(Vertex3D vertex : vertices) {
             x += vertex.getX();
@@ -189,10 +193,10 @@ public class CatmullClarkUtils {
      */
     public Vertex3D getVertexAddition(Vertex3D... vertices) {
         float x = 0.0f; float y = 0.0f; float z = 0.0f;
-        for(int i = 0; i < vertices.length; i++) {
-            x += vertices[i].getX();
-            y += vertices[i].getY();
-            z += vertices[i].getZ();
+        for (Vertex3D vertice : vertices) {
+            x += vertice.getX();
+            y += vertice.getY();
+            z += vertice.getZ();
         }
         return new Vertex3D(x, y, z);
     }
